@@ -1,7 +1,12 @@
 import 'package:find_the_way/list_page.dart';
+import 'package:find_the_way/noti_service.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //init notification service
+  NotiService().initNotification();
   runApp(const MainApp());
 }
 

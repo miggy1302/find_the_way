@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <queries>
         <!-- For handling Google Maps links -->
         <intent>
@@ -21,7 +23,8 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         android:enableOnBackInvokedCallback="true"
-        
+        <service android:name="me.carda.awesome_notifications.notifications.services.NotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

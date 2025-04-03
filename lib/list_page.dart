@@ -1,4 +1,5 @@
 import 'package:find_the_way/form_page.dart';
+import 'package:find_the_way/noti_service.dart';
 import 'package:find_the_way/place_card_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -42,6 +43,10 @@ class _ListPageState extends State<ListPage> {
                     setState(() {
                       nearbyPlaces = result;
                     });
+                    NotiService().showNotification(
+                      title: 'Nearby Places',
+                      body: 'You have ${nearbyPlaces.length} places nearby.',
+                    );
                   }
                 });
               },
@@ -71,3 +76,4 @@ class _ListPageState extends State<ListPage> {
     );
   }
 }
+
