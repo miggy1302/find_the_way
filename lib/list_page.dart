@@ -1,6 +1,6 @@
 import 'package:find_the_way/form_page.dart';
+import 'package:find_the_way/place_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ListPage extends StatefulWidget {
   final List<Place>? places; // Accept list of places
@@ -55,36 +55,16 @@ class _ListPageState extends State<ListPage> {
             child: nearbyPlaces.isEmpty
                 ? const Center(child: Text('No nearby places found.'))
                 : ListView.builder(
-                    itemCount: nearbyPlaces.length,
-                    itemBuilder: (context, index) {
-                      final place = nearbyPlaces[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        color: Colors.grey[850],
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(place.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.teal)),
-                              if (place.rating != null) Text('Rating: ${place.rating}', style: const TextStyle(color: Colors.white70)),
-                              if (place.googleMapsUri != null)
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    final Uri url = Uri.parse(place.googleMapsUri!);
-                                    if (await canLaunchUrl(url)) {
-                                      await launchUrl(url);
-                                    }
-                                  },
-                                  child: const Text('Open in Google Maps'),
-                                ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  itemCount: nearbyPlaces.length,
+                  itemBuilder: (context, index) {
+                    final place = nearbyPlaces[index];
+                    return PlaceCardWidget(
+                      name: place.name,
+                      rating: place.rating,
+                      googleMapsUri: place.googleMapsUri,
+                    );
+                  },
+                )
           ),
         ],
       ),
