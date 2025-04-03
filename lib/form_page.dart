@@ -93,7 +93,7 @@ class _FormPageState extends State<FormPage> {
           // JSON body for POST request
       final requestBody = jsonEncode({
         "includedTypes": [selectedPlaceType],
-        "maxResultCount": 10,
+        "maxResultCount": 20,
         "locationRestriction": {
           "circle": {
             "center": {"latitude": currentPosition!.latitude, "longitude": currentPosition!.longitude},
@@ -109,15 +109,16 @@ class _FormPageState extends State<FormPage> {
           headers: {
             "Content-Type": "application/json",
             "X-Goog-FieldMask":
-                "places.displayName,places.rating,places.googleMapsUri,places.priceRange",
+                "places.displayName,places.rating,places.googleMapsUri",
+                // "*"
           },
           body: requestBody,
         );
-
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
 
           List<Place> places = data['places']
+
               .map<Place>((json) => Place.fromJson(json))
               .toList();
 
@@ -148,7 +149,7 @@ class _FormPageState extends State<FormPage> {
             DropdownButton<String>(
               value: selectedRadius,
               onChanged: (value) => setState(() => selectedRadius = value!),
-              items: ['250', '500', '1000', '2000'].map((value) {
+              items: ['250', '500', '1000'].map((value) {
                 return DropdownMenuItem(value: value, child: Text('$value meters'));
               }).toList(),
             ),
