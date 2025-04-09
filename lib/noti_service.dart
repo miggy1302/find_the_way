@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NotiService {
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -8,18 +9,28 @@ class NotiService {
   bool get isInitialized => _isInitialized; 
 
   //Initialize the notification service
-  Future<void> initNotification() async{
-    if (_isInitialized) return; // Check if already initialized
+  Future<void> initNotification() async {
+  if (_isInitialized) return;
 
-    const initSettingAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  // 🔐 Request permission
+  final status = await Permission.notification.request();
 
-    const initSettings = InitializationSettings(
-      android: initSettingAndroid,
-    );
-
-    await notificationsPlugin.initialize(initSettings);
-  
+  if (status != PermissionStatus.granted) {
+    print('Notification permission not granted.');
+    return;
   }
+
+  const initSettingAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const initSettings = InitializationSettings(
+    android: initSettingAndroid,
+  );
+
+  await notificationsPlugin.initialize(initSettings);
+
+  _isInitialized = true; // Don't forget to mark as initialized!
+}
+
+
 
   //Notification Detail setup
   NotificationDetails notificationDetails(){
